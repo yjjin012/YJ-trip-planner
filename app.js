@@ -81,9 +81,12 @@ let cloudUser = null;
 let cloudSaveTimer = null;
 
 const elements = {
+  appShell: document.querySelector(".app-shell"),
   topbar: document.querySelector(".topbar"),
   tripTitle: document.querySelector("#tripTitle"),
   tripMeta: document.querySelector("#tripMeta"),
+  onboardingPanel: document.querySelector("#onboardingPanel"),
+  onboardingStartButton: document.querySelector("#onboardingStartButton"),
   ownerPanel: document.querySelector("#ownerPanel"),
   tripSelector: document.querySelector("#tripSelector"),
   newTripButton: document.querySelector("#newTripButton"),
@@ -103,6 +106,7 @@ const elements = {
   checklistProgress: document.querySelector("#checklistProgress"),
   checklistList: document.querySelector("#checklistList"),
   prepaidForm: document.querySelector("#prepaidForm"),
+  prepaidPanel: document.querySelector(".prepaid-panel"),
   prepaidName: document.querySelector("#prepaidName"),
   prepaidCategory: document.querySelector("#prepaidCategory"),
   prepaidAmount: document.querySelector("#prepaidAmount"),
@@ -735,6 +739,10 @@ function getDays() {
   return dateRange(state.trip.startDate, state.trip.endDate);
 }
 
+function hasTripBasics() {
+  return Boolean(state.trip.name.trim() && state.trip.startDate && state.trip.endDate);
+}
+
 function tripDisplayName(tripState, index = 0) {
   const name = tripState.trip.name.trim() || `새 여행 ${index + 1}`;
   const destination = tripState.trip.destination.trim();
@@ -873,6 +881,7 @@ function render() {
   renderTripManager();
   renderTripHeader();
   renderTripForm();
+  renderOnboardingMode();
   renderChecklist();
   renderPrepaidCosts();
   renderParticipants();
@@ -968,6 +977,24 @@ function renderTripForm() {
   elements.exchangeRate.value = state.trip.currency === "KRW" ? "" : state.trip.exchangeRate || "";
   updateExchangeRateUi(state.trip.currency);
   renderExpenseCurrencyHints();
+}
+
+function renderOnboardingMode() {
+  const isOnboarding = !hasTripBasics();
+
+  elements.appShell.classList.toggle("onboarding-mode", isOnboarding);
+  elements.onboardingPanel.classList.toggle("hidden", !isOnboarding);
+  elements.prepaidPanel.classList.toggle("hidden", isOnboarding);
+
+  const submitButton = elements.tripForm.querySelector('button[type="submit"]');
+
+  if (submitButton) {
+    submitButton.textContent = isOnboarding ? "기본 정보 저장" : "여행 저장";
+  }
+
+  if (isOnboarding) {
+    elements.saveStatus.textContent = "기본 정보를 저장하면 다음 단계가 열립니다";
+  }
 }
 
 function renderExpenseCurrencyHints() {
@@ -2480,6 +2507,11 @@ function setActiveView(viewName) {
     view.classList.toggle("active", view.id === `${viewName}View`);
   });
 }
+
+elements.onboardingStartButton.addEventListener("click", () => {
+  elements.tripName.focus();
+  elements.tripName.scrollIntoView({ behavior: "smooth", block: "center" });
+});
 
 elements.tripSelector.addEventListener("change", () => {
   switchTrip(elements.tripSelector.value);

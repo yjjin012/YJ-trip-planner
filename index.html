@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solo Trip Planner</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=3-mobile-tabs-cache-fix" />
+    <link rel="stylesheet" href="style.css?v=4-onboarding-flow" />
   </head>
   <body>
     <main class="app-shell">
@@ -18,6 +18,32 @@
         <button id="resetButton" class="icon-button" type="button" title="초기화" aria-label="초기화">
           <span aria-hidden="true">↺</span>
         </button>
+      </section>
+
+      <section id="onboardingPanel" class="onboarding-panel" aria-labelledby="onboardingTitle">
+        <div class="onboarding-copy">
+          <p class="eyebrow">Start</p>
+          <h2 id="onboardingTitle">처음 여행을 만들고 있어요</h2>
+          <p class="muted">먼저 기본 정보를 저장하면 선결제 경비, 오늘 경비 기록, 일정 관리가 차례로 열립니다.</p>
+        </div>
+        <ol class="onboarding-steps">
+          <li class="active">
+            <span>1</span>
+            <strong>여행 기본 정보 입력</strong>
+            <p>여행 이름, 날짜, 예산, 화폐를 먼저 저장합니다.</p>
+          </li>
+          <li>
+            <span>2</span>
+            <strong>미리 결제한 경비 입력</strong>
+            <p>항공권, 숙박, 입장권처럼 먼저 쓴 돈을 기록합니다.</p>
+          </li>
+          <li>
+            <span>3</span>
+            <strong>오늘 화면에서 경비 기록</strong>
+            <p>여행 중에는 빠른 경비 입력으로 바로 기록합니다.</p>
+          </li>
+        </ol>
+        <button id="onboardingStartButton" class="primary-button" type="button">기본 정보 입력하기</button>
       </section>
 
       <section id="ownerPanel" class="owner-panel" aria-labelledby="ownerTitle">
