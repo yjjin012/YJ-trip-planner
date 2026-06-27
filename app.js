@@ -994,6 +994,7 @@ function renderOnboardingMode() {
 
   if (isOnboarding) {
     elements.saveStatus.textContent = "기본 정보를 저장하면 다음 단계가 열립니다";
+    setActiveView("settings");
   }
 }
 
@@ -2545,6 +2546,7 @@ elements.tripForm.addEventListener("submit", (event) => {
   }
 
   const oldDestination = state.trip.destination;
+  const wasOnboarding = !hasTripBasics();
   state.trip = {
     name: elements.tripName.value.trim(),
     destination: elements.destination.value.trim(),
@@ -2563,6 +2565,9 @@ elements.tripForm.addEventListener("submit", (event) => {
 
   ensureSelectedDate();
   saveState();
+  if (wasOnboarding && hasTripBasics()) {
+    setActiveView("today");
+  }
   render();
 });
 

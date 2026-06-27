@@ -190,6 +190,22 @@ h3 {
   padding: 26px;
 }
 
+#settingsView {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+#settingsView.active {
+  display: grid;
+  gap: 18px;
+}
+
+#settingsView .owner-panel,
+#settingsView .trip-setup {
+  margin-top: 0;
+}
+
 .owner-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
@@ -272,8 +288,12 @@ h3 {
 
 .app-shell.onboarding-mode .owner-panel,
 .app-shell.onboarding-mode .tabs,
-.app-shell.onboarding-mode .view {
+.app-shell.onboarding-mode .view:not(#settingsView) {
   display: none;
+}
+
+.app-shell.onboarding-mode #settingsView {
+  display: block;
 }
 
 .app-shell.onboarding-mode .trip-setup {
@@ -1088,20 +1108,16 @@ select:focus {
     order: 1;
   }
 
-  .tabs {
+  .onboarding-panel {
     order: 2;
   }
 
-  .view {
+  .tabs {
     order: 3;
   }
 
-  .trip-setup {
+  .view {
     order: 4;
-  }
-
-  .owner-panel {
-    order: 5;
   }
 
   .form-grid,
@@ -1575,9 +1591,10 @@ select:focus {
     grid-auto-rows: auto !important;
     align-items: stretch !important;
     gap: 1px !important;
-    height: 46px !important;
-    min-height: 46px !important;
-    max-height: 46px !important;
+    flex-wrap: wrap !important;
+    height: 78px !important;
+    min-height: 78px !important;
+    max-height: 78px !important;
     overflow: hidden !important;
     border: 1px solid var(--ink) !important;
     border-radius: 2px !important;
@@ -1589,16 +1606,16 @@ select:focus {
   .tab-button {
     display: grid !important;
     place-items: center !important;
-    flex: 1 1 0 !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
+    flex: 1 1 calc(25% - 1px) !important;
+    height: 37px !important;
+    min-height: 37px !important;
+    max-height: 37px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: #fff !important;
     color: var(--ink) !important;
     padding: 0 1px !important;
-    font-size: 0.68rem !important;
+    font-size: 0.66rem !important;
     line-height: 1 !important;
     white-space: nowrap !important;
   }
@@ -1611,6 +1628,10 @@ select:focus {
 
 .app-shell.onboarding-mode .owner-panel,
 .app-shell.onboarding-mode .tabs,
-.app-shell.onboarding-mode .view {
+.app-shell.onboarding-mode .view:not(#settingsView) {
   display: none !important;
+}
+
+.app-shell.onboarding-mode #settingsView {
+  display: block !important;
 }
