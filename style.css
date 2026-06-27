@@ -1470,11 +1470,18 @@ select:focus {
 
   .tabs {
     position: fixed;
+    top: auto;
     right: 10px;
-    bottom: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
     left: 10px;
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 34px);
+    grid-auto-rows: 34px;
     gap: 1px;
+    height: 70px;
+    max-height: 70px;
+    overflow: hidden;
     border: 1px solid var(--ink);
     border-radius: 2px;
     background: var(--ink);
@@ -1483,7 +1490,11 @@ select:focus {
   }
 
   .tab-button {
+    display: grid;
+    place-items: center;
+    height: 34px;
     min-height: 34px;
+    max-height: 34px;
     border: 0;
     border-radius: 0;
     background: #fff;
