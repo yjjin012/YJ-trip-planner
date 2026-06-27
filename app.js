@@ -2566,7 +2566,7 @@ elements.tripForm.addEventListener("submit", (event) => {
   ensureSelectedDate();
   saveState();
   if (wasOnboarding && hasTripBasics()) {
-    setActiveView("today");
+    setActiveView("pretrip");
   }
   render();
 });
