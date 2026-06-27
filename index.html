@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solo Trip Planner</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=6-pretrip-checklist-tabs" />
+    <link rel="stylesheet" href="style.css?v=7-smart-home-weather-money" />
   </head>
   <body>
     <main class="app-shell">
@@ -102,11 +102,11 @@
             </label>
             <label>
               총 예산 (KRW)
-              <input id="budget" name="budget" type="number" min="0" step="any" placeholder="예: 800000" />
+              <input id="budget" name="budget" type="text" inputmode="decimal" placeholder="예: 800,000" />
             </label>
             <label>
               현지 공용 준비금
-              <input id="commonFund" name="commonFund" type="number" min="0" step="any" placeholder="예: 300000" />
+              <input id="commonFund" name="commonFund" type="text" inputmode="decimal" placeholder="예: 300,000" />
             </label>
             <label>
               현지 사용 화폐
@@ -129,7 +129,7 @@
             </label>
             <label>
               대략 환율
-              <input id="exchangeRate" name="exchangeRate" type="number" min="0" step="any" placeholder="예: 1350" />
+              <input id="exchangeRate" name="exchangeRate" type="text" inputmode="decimal" placeholder="예: 1,350" />
               <span id="exchangeRateLabel" class="field-note">1 현지 화폐 = 원화</span>
             </label>
             <button class="primary-button" type="submit">여행 저장</button>
@@ -166,7 +166,7 @@
             </label>
             <label>
               금액
-              <input id="prepaidAmount" name="prepaidAmount" type="number" min="0" step="any" placeholder="0" required />
+              <input id="prepaidAmount" name="prepaidAmount" type="text" inputmode="decimal" placeholder="0" required />
             </label>
             <label>
               결제 화폐
@@ -264,7 +264,7 @@
           <form id="quickExpenseForm" class="quick-expense-form">
             <label>
               <span id="quickExpenseAmountLabel">금액</span>
-              <input id="quickExpenseAmount" name="quickExpenseAmount" type="number" min="0" step="any" placeholder="0" required />
+              <input id="quickExpenseAmount" name="quickExpenseAmount" type="text" inputmode="decimal" placeholder="0" required />
             </label>
             <p id="quickExpenseKrwPreview" class="muted small-note conversion-note">원화 환산 대기</p>
             <div class="quick-category-group" aria-label="빠른 카테고리">
@@ -384,7 +384,7 @@
           </label>
           <label>
             <span id="expenseAmountLabel">금액</span>
-            <input id="expenseAmount" name="expenseAmount" type="number" min="0" step="any" placeholder="0" required />
+            <input id="expenseAmount" name="expenseAmount" type="text" inputmode="decimal" placeholder="0" required />
           </label>
           <p id="expenseKrwPreview" class="muted small-note conversion-note">원화 환산 대기</p>
           <label class="checkbox-label">

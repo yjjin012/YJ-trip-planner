@@ -16,6 +16,11 @@ const DESTINATION_IMAGE_ALIASES = new Map([
   ["nyc", "New York City"],
   ["뉴욕", "New York City"],
 ]);
+const WEATHER_DESTINATION_ALIASES = new Map([
+  ["danang", { name: "Da Nang", country: "Vietnam", latitude: 16.0471, longitude: 108.2068 }],
+  ["da nang", { name: "Da Nang", country: "Vietnam", latitude: 16.0471, longitude: 108.2068 }],
+  ["다낭", { name: "Da Nang", country: "Vietnam", latitude: 16.0471, longitude: 108.2068 }],
+]);
 const DESTINATION_CURRENCY_HINTS = [
   { currency: "USD", keywords: ["new york", "new york city", "nyc", "뉴욕", "미국", "usa", "united states"] },
   { currency: "JPY", keywords: ["tokyo", "osaka", "kyoto", "도쿄", "오사카", "교토", "일본", "japan"] },
@@ -651,6 +656,36 @@ function formatMoney(amount) {
   return formatMoneyForTrip(amount, state.trip);
 }
 
+function numberFromInput(inputOrValue) {
+  const value = typeof inputOrValue === "string" ? inputOrValue : inputOrValue?.value || "";
+  const normalized = String(value).replaceAll(",", "").trim();
+  const number = Number(normalized);
+
+  return Number.isFinite(number) ? number : 0;
+}
+
+function formatPlainNumber(value) {
+  const raw = String(value || "").replaceAll(",", "").replace(/[^\d.]/g, "");
+
+  if (!raw) {
+    return "";
+  }
+
+  const [integerPart, ...decimalParts] = raw.split(".");
+  const formattedInteger = integerPart ? Number(integerPart).toLocaleString("ko-KR") : "0";
+  const decimalPart = decimalParts.join("");
+
+  return raw.includes(".") ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+}
+
+function setAmountInputValue(inputElement, value) {
+  inputElement.value = value ? formatPlainNumber(value) : "";
+}
+
+function formatAmountInput(inputElement) {
+  inputElement.value = formatPlainNumber(inputElement.value);
+}
+
 function suggestedCurrencyForDestination(destination = "") {
   const normalized = destination.trim().toLowerCase();
 
@@ -741,6 +776,24 @@ function getDays() {
 
 function hasTripBasics() {
   return Boolean(state.trip.name.trim() && state.trip.startDate && state.trip.endDate);
+}
+
+function preferredViewForTrip() {
+  if (!hasTripBasics()) {
+    return "settings";
+  }
+
+  const today = localDateString();
+
+  if (state.trip.startDate && today < state.trip.startDate) {
+    return "pretrip";
+  }
+
+  if (state.trip.endDate && today > state.trip.endDate) {
+    return "report";
+  }
+
+  return "today";
 }
 
 function tripDisplayName(tripState, index = 0) {
@@ -971,10 +1024,10 @@ function renderTripForm() {
   elements.destination.value = state.trip.destination;
   elements.startDate.value = state.trip.startDate;
   elements.endDate.value = state.trip.endDate;
-  elements.budget.value = state.trip.budget || "";
-  elements.commonFund.value = state.trip.commonFund || "";
+  setAmountInputValue(elements.budget, state.trip.budget);
+  setAmountInputValue(elements.commonFund, state.trip.commonFund);
   elements.currency.value = state.trip.currency;
-  elements.exchangeRate.value = state.trip.currency === "KRW" ? "" : state.trip.exchangeRate || "";
+  setAmountInputValue(elements.exchangeRate, state.trip.currency === "KRW" ? "" : state.trip.exchangeRate);
   updateExchangeRateUi(state.trip.currency);
   renderExpenseCurrencyHints();
 }
@@ -1008,7 +1061,7 @@ function renderExpenseCurrencyHints() {
 
 function renderKrwPreview(inputElement, outputElement) {
   const currency = state.trip.currency || "KRW";
-  const amount = Number(inputElement.value || 0);
+  const amount = numberFromInput(inputElement);
 
   if (!amount) {
     outputElement.textContent = currency === "KRW" ? "원화 그대로 기록됩니다" : "금액을 입력하면 원화 환산액이 보입니다";
@@ -1102,7 +1155,7 @@ function requiresPaidByForSharedAmount(amount, editingExpenseId = "") {
     .filter((expense) => !expense.isPersonal && expense.id !== editingExpenseId)
     .reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
 
-  return prepaidCostsTotal() + sharedTotalBeforeThisExpense + Number(amount || 0) > commonFund;
+  return prepaidCostsTotal() + sharedTotalBeforeThisExpense + numberFromInput(String(amount || 0)) > commonFund;
 }
 
 function shouldAskPaidBy() {
@@ -1424,9 +1477,16 @@ async function maybeLoadWeather(force = false) {
 }
 
 async function geocodeDestination(destination) {
+  const normalized = destination.trim().toLowerCase();
+  const alias = WEATHER_DESTINATION_ALIASES.get(normalized);
+
+  if (alias) {
+    return alias;
+  }
+
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
     destination,
-  )}&count=1&language=ko&format=json`;
+  )}&count=10&language=ko&format=json`;
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -1434,7 +1494,9 @@ async function geocodeDestination(destination) {
   }
 
   const data = await response.json();
-  const place = data.results?.[0];
+  const results = data.results || [];
+  const exactMatch = results.find((item) => item.name?.trim().toLowerCase() === normalized);
+  const place = exactMatch || results[0];
 
   if (!place) {
     throw new Error("여행지를 찾지 못했습니다. 영어 도시명으로 다시 시도해 보세요.");
@@ -2252,7 +2314,7 @@ function importTripData(file) {
         state = activeTripState();
         resetRuntimeState();
         persistTripStore();
-        setActiveView("today");
+        setActiveView(preferredViewForTrip());
         render();
         setBackupStatus(`${file.name} 파일을 동행자 모드로 열었습니다.`);
       } else {
@@ -2346,7 +2408,7 @@ function addTripToStore(tripState = structuredClone(defaultState)) {
   state = structuredClone(entry.state);
   resetRuntimeState();
   persistTripStore();
-  setActiveView("today");
+  setActiveView(preferredViewForTrip());
   render();
 }
 
@@ -2365,7 +2427,7 @@ function switchTrip(tripId) {
   state.editing = structuredClone(defaultState.editing);
   resetRuntimeState();
   persistTripStore();
-  setActiveView("today");
+  setActiveView(preferredViewForTrip());
   render();
 }
 
@@ -2379,7 +2441,7 @@ function deleteActiveTrip() {
     resetRuntimeState();
     saveState();
     setBackupStatus("현재 여행을 비웠습니다.");
-    setActiveView("today");
+    setActiveView(preferredViewForTrip());
     render();
     return;
   }
@@ -2393,7 +2455,7 @@ function deleteActiveTrip() {
   resetRuntimeState();
   persistTripStore();
   setBackupStatus("현재 여행을 삭제했습니다.");
-  setActiveView("today");
+  setActiveView(preferredViewForTrip());
   render();
 }
 
@@ -2491,7 +2553,7 @@ function startExpenseEdit(expenseId) {
   elements.expenseDate.value = expense.date;
   renderLinkedPlanOptions(expense.date, expense.planId);
   elements.expenseCategory.value = expense.category;
-  elements.expenseAmount.value = expense.amount || "";
+  setAmountInputValue(elements.expenseAmount, expense.amount);
   elements.isPersonalExpense.checked = Boolean(expense.isPersonal);
   renderExpenseTypeControls();
   elements.personalParticipant.value = expense.participant || "나";
@@ -2508,6 +2570,14 @@ function setActiveView(viewName) {
     view.classList.toggle("active", view.id === `${viewName}View`);
   });
 }
+
+[elements.budget, elements.commonFund, elements.exchangeRate, elements.prepaidAmount, elements.quickExpenseAmount, elements.expenseAmount].forEach(
+  (inputElement) => {
+    inputElement.addEventListener("input", () => {
+      formatAmountInput(inputElement);
+    });
+  },
+);
 
 elements.onboardingStartButton.addEventListener("click", () => {
   elements.tripName.focus();
@@ -2552,10 +2622,10 @@ elements.tripForm.addEventListener("submit", (event) => {
     destination: elements.destination.value.trim(),
     startDate: elements.startDate.value,
     endDate: elements.endDate.value,
-    budget: Number(elements.budget.value || 0),
-    commonFund: Number(elements.commonFund.value || 0),
+    budget: numberFromInput(elements.budget),
+    commonFund: numberFromInput(elements.commonFund),
     currency: elements.currency.value,
-    exchangeRate: elements.currency.value === "KRW" ? 1 : Number(elements.exchangeRate.value || 0),
+    exchangeRate: elements.currency.value === "KRW" ? 1 : numberFromInput(elements.exchangeRate),
   };
 
   if (oldDestination !== state.trip.destination) {
@@ -2566,7 +2636,7 @@ elements.tripForm.addEventListener("submit", (event) => {
   ensureSelectedDate();
   saveState();
   if (wasOnboarding && hasTripBasics()) {
-    setActiveView("pretrip");
+    setActiveView(preferredViewForTrip());
   }
   render();
 });
@@ -2615,7 +2685,7 @@ elements.prepaidForm.addEventListener("submit", (event) => {
     id: uid("prepaid"),
     name: elements.prepaidName.value.trim(),
     category: elements.prepaidCategory.value,
-    amount: Number(elements.prepaidAmount.value || 0),
+    amount: numberFromInput(elements.prepaidAmount),
     currency: elements.prepaidCurrency.value || "KRW",
   });
 
@@ -2762,7 +2832,7 @@ elements.quickExpenseForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const amount = Number(elements.quickExpenseAmount.value || 0);
+  const amount = numberFromInput(elements.quickExpenseAmount);
   const isPersonal = elements.quickIsPersonalExpense.checked;
   const paidBy = isPersonal
     ? elements.quickPersonalParticipant.value || "나"
@@ -2782,7 +2852,7 @@ elements.quickExpenseForm.addEventListener("submit", (event) => {
   });
 
   elements.quickExpenseStatus.textContent = `${formatDate(expenseDate)} · ${selectedQuickCategory} ${formatMoney(
-    elements.quickExpenseAmount.value,
+    amount,
   )} 저장됨`;
   clearQuickExpenseForm();
   saveState();
@@ -2797,7 +2867,7 @@ elements.expenseForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const amount = Number(elements.expenseAmount.value || 0);
+  const amount = numberFromInput(elements.expenseAmount);
   const isPersonal = elements.isPersonalExpense.checked;
   const asksPaidBy = !isPersonal && requiresPaidByForSharedAmount(amount, state.editing.expenseId);
   const nextExpense = {
@@ -2952,9 +3022,10 @@ elements.resetButton.addEventListener("click", () => {
   clearQuickExpenseForm();
   saveState();
   setBackupStatus("현재 여행을 비웠습니다.");
-  setActiveView("today");
+  setActiveView(preferredViewForTrip());
   render();
 });
 
 initCloudSync();
+setActiveView(preferredViewForTrip());
 render();
