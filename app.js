@@ -2573,9 +2573,14 @@ function setActiveView(viewName) {
 
 [elements.budget, elements.commonFund, elements.exchangeRate, elements.prepaidAmount, elements.quickExpenseAmount, elements.expenseAmount].forEach(
   (inputElement) => {
-    inputElement.addEventListener("input", () => {
+    const syncAmountDisplay = () => {
       formatAmountInput(inputElement);
-    });
+    };
+
+    inputElement.addEventListener("input", syncAmountDisplay);
+    inputElement.addEventListener("change", syncAmountDisplay);
+    inputElement.addEventListener("blur", syncAmountDisplay);
+    inputElement.addEventListener("keyup", syncAmountDisplay);
   },
 );
 
