@@ -1087,7 +1087,7 @@ select:focus {
 
 @media (max-width: 560px) {
   .app-shell {
-    padding: 10px 10px 92px;
+    padding: 10px 10px 118px;
   }
 
   .topbar,
@@ -1119,24 +1119,35 @@ select:focus {
 
   .tabs {
     position: fixed;
-    right: 12px;
-    bottom: 12px;
-    left: 12px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
     z-index: 20;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
     margin-top: 0;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgba(255, 253, 249, 0.96);
-    box-shadow: 0 12px 34px rgba(31, 41, 51, 0.18);
-    padding: 8px;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    background: var(--ink);
+    box-shadow: none;
+    padding: 1px;
   }
 
   .tab-button {
-    min-height: 42px;
-    padding: 8px 2px;
-    font-size: 0.74rem;
+    min-height: 34px;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    color: var(--ink);
+    padding: 6px 2px;
+    font-size: 0.72rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .tab-button.active {
+    background: var(--ink);
+    color: #fff;
   }
 
   .quick-category-group {
@@ -1450,4 +1461,41 @@ select:focus {
   border-color: var(--ink);
   background: var(--ink);
   color: #fff;
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    padding-bottom: 118px;
+  }
+
+  .tabs {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    background: var(--ink);
+    box-shadow: none;
+    padding: 1px;
+  }
+
+  .tab-button {
+    min-height: 34px;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    color: var(--ink);
+    padding: 6px 2px;
+    font-size: 0.72rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .tab-button.active {
+    background: var(--ink);
+    color: #fff;
+  }
 }
