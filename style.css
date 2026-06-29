@@ -248,7 +248,7 @@ h3 {
   background: var(--ink);
 }
 
-.onboarding-steps li {
+.onboarding-steps > * {
   display: grid;
   gap: 8px;
   min-height: 142px;
@@ -256,7 +256,7 @@ h3 {
   padding: 14px;
 }
 
-.onboarding-steps li.active {
+.onboarding-steps > *.active {
   background: var(--ink);
   color: #fff;
 }
@@ -282,8 +282,14 @@ h3 {
   line-height: 1.45;
 }
 
-.onboarding-steps li.active p {
+.onboarding-steps > *.active p {
   color: rgba(255, 255, 255, 0.72);
+}
+
+.pretrip-checklist-panel {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
 }
 
 .app-shell.onboarding-mode .owner-panel,
@@ -1232,7 +1238,7 @@ select:focus {
     min-height: auto;
   }
 
-  .onboarding-steps li {
+  .onboarding-steps > * {
     min-height: auto;
   }
 }
@@ -1275,7 +1281,7 @@ select:focus {
     gap: 12px;
   }
 
-  .onboarding-steps li {
+  .onboarding-steps > * {
     padding: 12px;
   }
 

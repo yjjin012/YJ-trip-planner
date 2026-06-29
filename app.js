@@ -1,6 +1,7 @@
-const STORAGE_KEY = "solo-trip-planner-v6";
+const STORAGE_KEY = "tripflow-travel-manager-v1";
 const OLD_STORAGE_KEY = "solo-trip-planner-v1";
 const PREVIOUS_STORAGE_KEYS = [
+  "solo-trip-planner-v6",
   "solo-trip-planner-v5",
   "solo-trip-planner-v4",
   "solo-trip-planner-v3",
@@ -976,7 +977,7 @@ function renderTripHeader() {
   elements.tripTitle.textContent = name || "여행 관리";
 
   if (!startDate || !endDate) {
-    elements.tripMeta.textContent = "여행 전 준비부터 여행 중 기록, 여행 후 정산과 회고까지 관리해 보세요";
+    elements.tripMeta.textContent = "여행 전 준비, 여행 중 기록, 여행 후 정산과 리포트까지 관리해 보세요";
     return;
   }
 
@@ -2126,7 +2127,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
   <body>
     <main>
       <header>
-        <p class="eyebrow">Tripflow</p>
+        <p class="eyebrow">TripFlow</p>
         <h1>${escapeHtml(title)}</h1>
         <p class="muted">${escapeHtml(meta)}</p>
       </header>
@@ -2562,13 +2563,30 @@ function startExpenseEdit(expenseId) {
   elements.expenseAmount.focus();
 }
 
-function setActiveView(viewName) {
+function setActiveView(viewName, options = {}) {
+  const actualViewName = viewName === "settlement" ? "report" : viewName;
+
   elements.tabButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.view === viewName);
   });
   elements.views.forEach((view) => {
-    view.classList.toggle("active", view.id === `${viewName}View`);
+    view.classList.toggle("active", view.id === `${actualViewName}View`);
   });
+
+  if (options.scroll) {
+    requestAnimationFrame(() => scrollToViewSection(viewName));
+  }
+}
+
+function scrollToViewSection(viewName) {
+  const target =
+    viewName === "settlement"
+      ? document.querySelector("#settlementTitle")
+      : viewName === "report"
+        ? document.querySelector("#reportTitle")
+        : document.querySelector(`#${viewName}View`);
+
+  target?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 [elements.budget, elements.commonFund, elements.exchangeRate, elements.prepaidAmount, elements.quickExpenseAmount, elements.expenseAmount].forEach(
@@ -2911,7 +2929,7 @@ elements.refreshWeatherButton.addEventListener("click", () => {
 
 elements.tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    setActiveView(button.dataset.view);
+    setActiveView(button.dataset.view, { scroll: true });
   });
 });
 
