@@ -2566,13 +2566,11 @@ function startExpenseEdit(expenseId) {
 }
 
 function setActiveView(viewName, options = {}) {
-  const actualViewName = viewName === "settlement" ? "report" : viewName;
-
   elements.tabButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.view === viewName);
   });
   elements.views.forEach((view) => {
-    view.classList.toggle("active", view.id === `${actualViewName}View`);
+    view.classList.toggle("active", view.id === `${viewName}View`);
   });
 
   if (options.scroll) {
@@ -2582,9 +2580,7 @@ function setActiveView(viewName, options = {}) {
 
 function scrollToViewSection(viewName) {
   const target =
-    viewName === "settlement"
-      ? document.querySelector("#settlementTitle")
-      : viewName === "report"
+    viewName === "report"
         ? document.querySelector("#reportTitle")
         : document.querySelector(`#${viewName}View`);
 
@@ -2611,7 +2607,19 @@ function openTripSetup() {
   elements.tripName.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-elements.heroStartButton.addEventListener("click", openTripSetup);
+function startTripFromHero() {
+  if (!hasTripBasics()) {
+    openTripSetup();
+    return;
+  }
+
+  saveState();
+  addTripToStore();
+  setBackupStatus("새 여행을 만들었습니다.");
+  openTripSetup();
+}
+
+elements.heroStartButton.addEventListener("click", startTripFromHero);
 elements.onboardingStartButton.addEventListener("click", openTripSetup);
 
 elements.tripSelector.addEventListener("change", () => {

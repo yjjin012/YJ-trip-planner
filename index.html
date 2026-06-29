@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TripFlow 여행 관리</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=12-photo-editorial" />
+    <link rel="stylesheet" href="style.css?v=18-hero-new-trip-action" />
   </head>
   <body>
     <main class="app-shell">
       <section class="topbar" aria-label="여행 요약">
         <div class="hero-copy">
-          <h1 class="brand-logo">TRIPFLOW</h1>
           <button id="heroStartButton" class="hero-button" type="button">새 여행 시작하기</button>
         </div>
         <div class="hero-status" aria-label="현재 여행 정보">
@@ -457,13 +456,35 @@
         <div id="expensesList" class="item-list" aria-live="polite"></div>
       </section>
 
+      <section id="settlementView" class="view" aria-labelledby="settlementTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">After Trip</p>
+            <h2 id="settlementTitle">정산</h2>
+          </div>
+          <p class="muted">개인 사용 경비와 공용 준비금을 넘은 공용 경비를 따로 확인합니다</p>
+        </div>
+
+        <div class="report-columns">
+          <section class="report-block" aria-labelledby="participantBreakdownTitle">
+            <h3 id="participantBreakdownTitle">개인 사용 경비</h3>
+            <div id="participantBreakdown" class="mini-list"></div>
+          </section>
+          <section class="report-block" aria-labelledby="settlementBreakdownTitle">
+            <h3 id="settlementBreakdownTitle">공용 경비 정산</h3>
+            <p class="muted small-note">공용 준비금을 넘은 공용 경비 기준</p>
+            <div id="settlementBreakdown" class="mini-list"></div>
+          </section>
+        </div>
+      </section>
+
       <section id="reportView" class="view" aria-labelledby="reportTitle">
         <div class="section-heading">
           <div>
             <p class="eyebrow">After Trip</p>
             <h2 id="reportTitle">리포트</h2>
           </div>
-          <p class="muted">선결제 비용, 여행 중 지출, 개인 경비와 공용 정산을 함께 확인합니다</p>
+          <p class="muted">예산, 선결제 비용, 여행 중 지출 흐름을 요약해서 확인합니다</p>
         </div>
 
         <div class="report-grid">
@@ -523,15 +544,6 @@
           <section class="report-block" aria-labelledby="categoryBreakdownTitle">
             <h3 id="categoryBreakdownTitle">카테고리별 지출</h3>
             <div id="categoryBreakdown" class="mini-list"></div>
-          </section>
-          <section class="report-block" aria-labelledby="participantBreakdownTitle">
-            <h3 id="participantBreakdownTitle">개인 사용 경비</h3>
-            <div id="participantBreakdown" class="mini-list"></div>
-          </section>
-          <section class="report-block" aria-labelledby="settlementTitle">
-            <h3 id="settlementTitle">정산</h3>
-            <p class="muted small-note">공용 준비금을 넘은 공용 경비 기준</p>
-            <div id="settlementBreakdown" class="mini-list"></div>
           </section>
           <section class="report-block" aria-labelledby="prepaidBreakdownTitle">
             <h3 id="prepaidBreakdownTitle">선결제 경비</h3>
@@ -617,7 +629,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js?v=12-photo-editorial"></script>
-    <script src="app.js?v=12-photo-editorial"></script>
+    <script src="supabase-config.js?v=18-hero-new-trip-action"></script>
+    <script src="app.js?v=18-hero-new-trip-action"></script>
   </body>
 </html>
