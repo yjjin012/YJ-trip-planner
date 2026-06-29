@@ -212,6 +212,7 @@ const elements = {
   cloudUploadButton: document.querySelector("#cloudUploadButton"),
   cloudDownloadButton: document.querySelector("#cloudDownloadButton"),
   cloudStatus: document.querySelector("#cloudStatus"),
+  cloudLastSaved: document.querySelector("#cloudLastSaved"),
 };
 
 function normalizeState(savedState) {
@@ -359,7 +360,6 @@ function saveState() {
   entry.state = normalizeState(state);
   entry.updatedAt = new Date().toISOString();
   persistTripStore();
-  queueCloudSave();
   elements.saveStatus.textContent = "자동 저장됨";
 }
 
@@ -383,6 +383,16 @@ function setCloudStatus(message) {
   }
 }
 
+function setCloudLastSaved(updatedAt) {
+  if (!elements.cloudLastSaved) {
+    return;
+  }
+
+  elements.cloudLastSaved.textContent = updatedAt
+    ? `마지막 클라우드 저장: ${formatDateTime(updatedAt)}`
+    : "마지막 클라우드 저장: 없음";
+}
+
 function renderCloudControls() {
   if (!elements.cloudForm) {
     return;
@@ -402,16 +412,21 @@ function renderCloudControls() {
 
   if (!configured) {
     setCloudStatus("supabase-config.js에 Supabase 주소와 공개 키를 넣으면 클라우드 저장을 켤 수 있습니다.");
+    setCloudLastSaved("");
     return;
   }
 
   if (!window.supabase?.createClient) {
     setCloudStatus("Supabase 연결 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.");
+    setCloudLastSaved("");
     return;
   }
 
   if (loggedIn) {
-    setCloudStatus(`${cloudUser.email} 계정으로 연결됨. 저장할 때 클라우드에도 자동으로 반영됩니다.`);
+    setCloudStatus(`${cloudUser.email} 계정으로 연결됨. 필요할 때 직접 저장하거나 불러오세요.`);
+  } else {
+    setCloudStatus("로그인하면 클라우드 저장/불러오기를 사용할 수 있습니다.");
+    setCloudLastSaved("");
   }
 }
 
@@ -432,40 +447,53 @@ function initCloudSync() {
   cloudClient.auth.getSession().then(({ data }) => {
     cloudUser = data.session?.user || null;
     renderCloudControls();
+    loadCloudLastSaved();
   });
 
   cloudClient.auth.onAuthStateChange((_event, session) => {
     cloudUser = session?.user || null;
     renderCloudControls();
+    loadCloudLastSaved();
   });
 }
 
 function queueCloudSave() {
+  // Cloud sync is intentionally manual. Keep this no-op to preserve older call sites safely.
+}
+
+async function loadCloudLastSaved() {
   if (!cloudClient || !cloudUser) {
     return;
   }
 
-  clearTimeout(cloudSaveTimer);
-  cloudSaveTimer = setTimeout(() => {
-    syncTripStoreToCloud({ silent: true });
-  }, 900);
+  const { data, error } = await cloudClient
+    .from("trip_app_stores")
+    .select("updated_at")
+    .eq("user_id", cloudUser.id)
+    .maybeSingle();
+
+  if (error || !data?.updated_at) {
+    setCloudLastSaved("");
+    return;
+  }
+
+  setCloudLastSaved(data.updated_at);
 }
 
-async function syncTripStoreToCloud({ silent = false } = {}) {
+async function syncTripStoreToCloud() {
   if (!cloudClient || !cloudUser) {
     setCloudStatus("먼저 클라우드에 로그인해 주세요.");
     return;
   }
 
-  if (!silent) {
-    setCloudStatus("클라우드에 저장하는 중...");
-  }
+  setCloudStatus("클라우드에 저장하는 중...");
 
+  const updatedAt = new Date().toISOString();
   const { error } = await cloudClient.from("trip_app_stores").upsert(
     {
       user_id: cloudUser.id,
       trip_store: normalizeTripStore(tripStore),
-      updated_at: new Date().toISOString(),
+      updated_at: updatedAt,
     },
     { onConflict: "user_id" },
   );
@@ -475,7 +503,8 @@ async function syncTripStoreToCloud({ silent = false } = {}) {
     return;
   }
 
-  setCloudStatus(`${cloudUser.email} 계정에 저장됨.`);
+  setCloudLastSaved(updatedAt);
+  setCloudStatus(`${cloudUser.email} 계정에 현재 앱 전체 상태를 저장했습니다.`);
 }
 
 async function downloadTripStoreFromCloud() {
@@ -484,7 +513,7 @@ async function downloadTripStoreFromCloud() {
     return;
   }
 
-  if (!confirm("현재 브라우저의 여행 데이터를 클라우드 데이터로 바꿀까요?")) {
+  if (!confirm("현재 브라우저의 데이터가 클라우드 데이터로 교체됩니다. 계속할까요?")) {
     return;
   }
 
@@ -511,7 +540,8 @@ async function downloadTripStoreFromCloud() {
   resetRuntimeState();
   persistTripStore();
   render();
-  setCloudStatus(`클라우드 데이터를 가져왔습니다. 마지막 저장: ${formatDateTime(data.updated_at)}`);
+  setCloudLastSaved(data.updated_at);
+  setCloudStatus("클라우드 데이터를 불러와 현재 화면에 반영했습니다.");
 }
 
 async function signUpToCloud() {
@@ -565,7 +595,7 @@ async function loginToCloud() {
 
   cloudUser = data.user || data.session?.user || cloudUser;
   renderCloudControls();
-  await syncTripStoreToCloud();
+  await loadCloudLastSaved();
 }
 
 async function logoutFromCloud() {

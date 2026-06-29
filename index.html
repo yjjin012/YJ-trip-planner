@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TripFlow 여행 관리</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=18-hero-new-trip-action" />
+    <link rel="stylesheet" href="style.css?v=19-manual-cloud-sync" />
   </head>
   <body>
     <main class="app-shell">
@@ -594,8 +594,9 @@
           <section class="cloud-panel" aria-labelledby="cloudTitle">
             <div>
               <p class="eyebrow">Cloud</p>
-              <h3 id="cloudTitle">클라우드 저장</h3>
-              <p id="cloudStatus" class="muted">Supabase 설정을 넣으면 여러 기기에서 같은 여행 데이터를 사용할 수 있습니다.</p>
+              <h3 id="cloudTitle">클라우드 동기화</h3>
+              <p id="cloudStatus" class="muted">로그인하면 같은 계정으로 맥과 아이폰에서 여행 데이터를 직접 저장하고 불러올 수 있습니다.</p>
+              <p id="cloudLastSaved" class="muted small-note">마지막 클라우드 저장: 없음</p>
             </div>
             <form id="cloudForm" class="cloud-form">
               <label>
@@ -619,8 +620,8 @@
               </div>
             </form>
             <div class="cloud-actions">
-              <button id="cloudUploadButton" class="secondary-button" type="button">현재 데이터 올리기</button>
-              <button id="cloudDownloadButton" class="secondary-button" type="button">클라우드에서 가져오기</button>
+              <button id="cloudUploadButton" class="secondary-button" type="button">클라우드에 저장</button>
+              <button id="cloudDownloadButton" class="secondary-button" type="button">클라우드에서 불러오기</button>
             </div>
           </section>
           <button class="secondary-button" type="button" disabled>초대 링크 만들기</button>
@@ -629,7 +630,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js?v=18-hero-new-trip-action"></script>
-    <script src="app.js?v=18-hero-new-trip-action"></script>
+    <script src="supabase-config.js?v=19-manual-cloud-sync"></script>
+    <script src="app.js?v=19-manual-cloud-sync"></script>
   </body>
 </html>
