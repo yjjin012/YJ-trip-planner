@@ -1693,3 +1693,732 @@ select:focus {
 .app-shell.onboarding-mode #settingsView {
   display: block !important;
 }
+
+/* Editorial Travel Dashboard refresh */
+:root {
+  --bg: #eef1f4;
+  --paper: #ffffff;
+  --paper-soft: #f6f7f8;
+  --ink: #07111f;
+  --muted: #6d7580;
+  --line: #dfe4ea;
+  --teal: #c7ff4f;
+  --teal-dark: #07111f;
+  --coral: #c7ff4f;
+  --sun: #07111f;
+  --mint: #f6f7f8;
+  --blue: #07111f;
+  --plum: #07111f;
+  --shadow: 0 26px 70px rgba(7, 17, 31, 0.1);
+  --shadow-soft: 0 16px 44px rgba(7, 17, 31, 0.08);
+}
+
+body {
+  background:
+    linear-gradient(180deg, #ffffff 0, #f6f7f8 52vh, var(--bg) 100%),
+    var(--bg);
+}
+
+.app-shell {
+  width: min(1320px, 100%);
+  padding: 36px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px) auto;
+  align-items: end;
+  min-height: clamp(560px, 72vh, 760px);
+  border-radius: 28px !important;
+  padding: clamp(28px, 5vw, 70px);
+  background-image:
+    linear-gradient(90deg, rgba(7, 17, 31, 0.94), rgba(7, 17, 31, 0.68) 54%, rgba(7, 17, 31, 0.16)),
+    linear-gradient(0deg, rgba(7, 17, 31, 0.72), rgba(7, 17, 31, 0) 52%),
+    var(--hero-image);
+  box-shadow: var(--shadow);
+}
+
+.topbar::after {
+  right: clamp(24px, 4vw, 58px);
+  top: clamp(24px, 4vw, 48px);
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
+}
+
+.hero-copy {
+  max-width: 940px;
+}
+
+.hero-copy .eyebrow,
+.topbar .eyebrow {
+  color: var(--teal);
+}
+
+.hero-copy h1 {
+  max-width: 920px;
+  margin: 0 0 22px;
+  color: #fff;
+  font-size: clamp(3.15rem, 8.4vw, 7.8rem);
+  font-weight: 760;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.hero-subcopy {
+  max-width: 680px;
+  margin: 0 0 28px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(1.02rem, 2vw, 1.28rem);
+  font-weight: 520;
+  line-height: 1.65;
+}
+
+.hero-button {
+  min-height: 54px;
+  border: 1px solid var(--teal);
+  border-radius: 999px;
+  background: var(--teal);
+  color: var(--ink);
+  padding: 13px 22px;
+  font-weight: 760;
+}
+
+.hero-button:hover {
+  transform: translateY(-1px);
+}
+
+.hero-status {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 22px;
+  background: rgba(7, 17, 31, 0.42);
+  color: #fff;
+  padding: 22px;
+  backdrop-filter: blur(18px);
+}
+
+.hero-status span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero-status strong {
+  font-size: clamp(1.38rem, 2.6vw, 2.2rem);
+  font-weight: 720;
+  line-height: 1.05;
+}
+
+.hero-status p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.5;
+}
+
+.icon-button {
+  align-self: start;
+  border-radius: 999px !important;
+}
+
+.onboarding-panel,
+.workflow-strip,
+.tabs,
+.owner-panel,
+.trip-setup,
+.view {
+  margin-top: 28px;
+}
+
+.app-shell.onboarding-mode:not(.setup-open) #settingsView .trip-setup {
+  display: none !important;
+}
+
+.onboarding-panel {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr) auto;
+  gap: 28px;
+  border: 1px solid var(--line);
+  border-radius: 24px !important;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+  padding: 28px;
+}
+
+.onboarding-copy h2,
+.section-heading h2 {
+  font-size: clamp(1.7rem, 3vw, 2.7rem);
+  font-weight: 720;
+  line-height: 1.08;
+}
+
+.onboarding-steps {
+  gap: 12px;
+  border: 0;
+  background: transparent;
+}
+
+.onboarding-steps > * {
+  min-height: 170px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.onboarding-steps > *.active {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.onboarding-steps span {
+  border-radius: 999px;
+}
+
+.workflow-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  border: 0;
+  background: transparent;
+}
+
+.workflow-strip article {
+  min-height: 150px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+}
+
+.workflow-strip span,
+.eyebrow,
+.quick-expense-card .eyebrow {
+  color: var(--teal-dark);
+}
+
+.workflow-strip span {
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--teal);
+  color: var(--ink);
+  padding: 5px 9px;
+}
+
+.workflow-strip strong {
+  font-size: 1.3rem;
+}
+
+.tabs {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 10px;
+  position: sticky;
+  top: 18px;
+  border: 1px solid rgba(7, 17, 31, 0.12) !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  box-shadow: var(--shadow-soft);
+  padding: 10px;
+}
+
+.tab-button {
+  display: grid;
+  gap: 3px;
+  min-height: 64px;
+  border: 1px solid transparent;
+  border-radius: 18px !important;
+  color: var(--ink);
+  padding: 10px;
+}
+
+.tab-stage {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tab-label {
+  font-size: 1rem;
+  font-weight: 760;
+}
+
+.tab-button.active {
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+.tab-button.active .tab-stage {
+  color: var(--teal);
+}
+
+.owner-panel,
+.trip-setup,
+.view,
+.weather-card,
+.today-summary-card,
+.quick-expense-card,
+.item-card,
+.metric,
+.progress-area,
+.report-block,
+.share-preview,
+.backup-panel,
+.cloud-panel {
+  border: 1px solid var(--line) !important;
+  border-radius: 24px !important;
+  background: var(--paper) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+.trip-setup,
+.view {
+  padding: clamp(22px, 3.4vw, 40px);
+}
+
+.owner-panel,
+.backup-panel,
+.cloud-panel {
+  padding: 24px;
+}
+
+.section-heading {
+  margin-bottom: 26px;
+}
+
+h3 {
+  font-size: 1.18rem;
+}
+
+.form-grid,
+.entry-form,
+.prepaid-form,
+.quick-expense-form {
+  gap: 16px;
+}
+
+input,
+select,
+.conversion-note,
+.checkbox-label {
+  min-height: 50px;
+  border-color: var(--line) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
+input:focus,
+select:focus {
+  outline: 3px solid rgba(199, 255, 79, 0.36);
+  border-color: var(--ink) !important;
+}
+
+.primary-button,
+.secondary-button,
+.map-link,
+.move-button,
+.complete-button,
+.delete-button,
+.edit-button,
+.day-button,
+.quick-category-button {
+  border-radius: 999px !important;
+}
+
+.primary-button {
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+.secondary-button,
+.day-button,
+.quick-category-button {
+  border: 1px solid var(--line) !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+}
+
+.day-button.active,
+.quick-category-button.active {
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+.weather-card,
+.today-summary-card {
+  padding: 28px;
+}
+
+.weather-card::before {
+  border-top-color: var(--teal);
+}
+
+.weather-main strong {
+  font-size: clamp(3.2rem, 7vw, 5.6rem);
+  font-weight: 760;
+}
+
+.today-metrics,
+.report-grid {
+  gap: 16px;
+}
+
+.today-metrics div,
+.weather-detail {
+  border-radius: 18px !important;
+  background: var(--paper-soft) !important;
+  padding: 16px;
+}
+
+.today-metrics strong,
+.weather-detail strong {
+  font-size: clamp(1.18rem, 2vw, 1.55rem);
+  font-weight: 760;
+}
+
+.quick-expense-card {
+  margin-top: 22px;
+  padding: 28px;
+}
+
+.quick-expense-card .quick-category-button.active,
+.quick-expense-card .primary-button {
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+.item-list,
+.report-columns,
+.mini-list {
+  gap: 16px;
+}
+
+.item-card {
+  border-left: 1px solid var(--line);
+  grid-template-columns: minmax(72px, 110px) 1fr auto;
+  padding: 20px;
+}
+
+.item-main strong {
+  font-size: 1.12rem;
+}
+
+.metric {
+  padding: 22px;
+}
+
+.metric strong {
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+  font-weight: 760;
+}
+
+.progress-track {
+  height: 14px;
+  background: var(--paper-soft);
+}
+
+.progress-fill {
+  background: var(--ink);
+}
+
+.report-block {
+  padding: 22px;
+}
+
+.share-panel {
+  max-width: none;
+}
+
+.checklist-item,
+.empty-state,
+.participant-chip {
+  border-radius: 18px !important;
+  background: #fff !important;
+}
+
+.check-toggle,
+.checklist-item.checked .check-toggle {
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    min-height: 620px;
+  }
+
+  .hero-status {
+    max-width: 520px;
+  }
+
+  .onboarding-panel,
+  .onboarding-steps,
+  .workflow-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    grid-template-columns: repeat(8, minmax(112px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    padding: 12px 12px 126px !important;
+  }
+
+  .topbar {
+    min-height: 560px;
+    border-radius: 24px !important;
+    padding: 24px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.55rem, 15vw, 4.2rem);
+  }
+
+  .hero-subcopy {
+    font-size: 0.98rem;
+  }
+
+  .hero-status {
+    padding: 18px;
+  }
+
+  .onboarding-panel,
+  .workflow-strip article,
+  .owner-panel,
+  .trip-setup,
+  .view {
+    border-radius: 22px !important;
+    padding: 18px !important;
+  }
+
+  .tabs {
+    right: 10px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    left: 10px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    height: 92px !important;
+    min-height: 92px !important;
+    max-height: 92px !important;
+    gap: 6px !important;
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    padding: 8px !important;
+  }
+
+  .tab-button {
+    flex: 1 1 calc(25% - 6px) !important;
+    height: 35px !important;
+    min-height: 35px !important;
+    max-height: 35px !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 999px !important;
+    padding: 3px 2px !important;
+    background: #fff !important;
+  }
+
+  .tab-stage {
+    display: none;
+  }
+
+  .tab-label {
+    font-size: 0.72rem;
+  }
+
+  .tab-button.active {
+    background: var(--ink) !important;
+    color: #fff !important;
+  }
+
+  .metric strong {
+    font-size: 1.5rem;
+  }
+}
+
+/* Photo-led editorial refinement */
+.topbar {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px) auto;
+  min-height: clamp(620px, 78vh, 820px);
+  border-radius: 6px !important;
+  background-image:
+    linear-gradient(90deg, rgba(7, 17, 31, 0.42), rgba(7, 17, 31, 0.14) 48%, rgba(7, 17, 31, 0.04)),
+    linear-gradient(0deg, rgba(7, 17, 31, 0.62), rgba(7, 17, 31, 0.04) 58%),
+    var(--hero-image);
+}
+
+.topbar::after {
+  content: "TRAVEL MANAGEMENT";
+}
+
+.hero-copy {
+  align-self: end;
+  display: grid;
+  gap: 22px;
+}
+
+.brand-logo {
+  max-width: none;
+  margin: 0;
+  color: #fff;
+  font-family: "Apple Chancery", "Brush Script MT", "Segoe Script", cursive;
+  font-size: clamp(4.8rem, 13vw, 12rem);
+  font-weight: 400;
+  line-height: 0.78;
+  text-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+}
+
+.hero-button {
+  width: fit-content;
+  min-height: 48px;
+  border-color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  padding: 12px 18px;
+  backdrop-filter: blur(12px);
+}
+
+.hero-status {
+  align-self: end;
+  border-radius: 6px;
+  background: rgba(7, 17, 31, 0.34);
+}
+
+.icon-button {
+  border-radius: 4px !important;
+}
+
+.onboarding-panel,
+.workflow-strip article,
+.tabs,
+.tab-button,
+.owner-panel,
+.trip-setup,
+.view,
+.weather-card,
+.today-summary-card,
+.quick-expense-card,
+.item-card,
+.metric,
+.progress-area,
+.report-block,
+.share-preview,
+.backup-panel,
+.cloud-panel,
+.empty-state,
+.checklist-item,
+input,
+select,
+.conversion-note,
+.checkbox-label {
+  border-radius: 6px !important;
+}
+
+.primary-button,
+.secondary-button,
+.map-link,
+.move-button,
+.complete-button,
+.delete-button,
+.edit-button,
+.day-button,
+.quick-category-button,
+.participant-chip,
+.participant-chip button,
+.check-toggle {
+  border-radius: 4px !important;
+}
+
+.workflow-strip span {
+  border-radius: 3px;
+}
+
+.onboarding-steps > * {
+  border-radius: 6px;
+}
+
+.tabs {
+  gap: 1px;
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  padding: 1px;
+}
+
+.tab-button {
+  min-height: 62px;
+  border: 0 !important;
+  background: #fff !important;
+}
+
+.tab-button.active {
+  background: var(--ink) !important;
+}
+
+.owner-panel,
+.trip-setup,
+.view,
+.weather-card,
+.today-summary-card,
+.quick-expense-card,
+.item-card,
+.metric,
+.progress-area,
+.report-block,
+.backup-panel,
+.cloud-panel {
+  box-shadow: 0 14px 34px rgba(7, 17, 31, 0.06) !important;
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    min-height: 650px;
+  }
+
+  .brand-logo {
+    font-size: clamp(4.2rem, 18vw, 8rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    min-height: 580px;
+    border-radius: 6px !important;
+    background-image:
+      linear-gradient(180deg, rgba(7, 17, 31, 0.22), rgba(7, 17, 31, 0.04) 44%, rgba(7, 17, 31, 0.68)),
+      var(--hero-image);
+  }
+
+  .brand-logo {
+    max-width: 100%;
+    font-size: clamp(2.95rem, 15vw, 4.1rem);
+  }
+
+  .hero-button {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .tabs {
+    border-radius: 6px !important;
+    gap: 1px !important;
+    background: var(--ink) !important;
+    padding: 1px !important;
+  }
+
+  .tab-button {
+    border-radius: 0 !important;
+  }
+}

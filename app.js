@@ -89,6 +89,7 @@ let cloudSaveTimer = null;
 const elements = {
   appShell: document.querySelector(".app-shell"),
   topbar: document.querySelector(".topbar"),
+  heroStartButton: document.querySelector("#heroStartButton"),
   tripTitle: document.querySelector("#tripTitle"),
   tripMeta: document.querySelector("#tripMeta"),
   onboardingPanel: document.querySelector("#onboardingPanel"),
@@ -977,7 +978,7 @@ function renderTripHeader() {
   elements.tripTitle.textContent = name || "여행 관리";
 
   if (!startDate || !endDate) {
-    elements.tripMeta.textContent = "여행 전 준비, 여행 중 기록, 여행 후 정산과 리포트까지 관리해 보세요";
+    elements.tripMeta.textContent = "현재 여행 정보를 한눈에 확인하세요";
     return;
   }
 
@@ -1037,6 +1038,7 @@ function renderOnboardingMode() {
   const isOnboarding = !hasTripBasics();
 
   elements.appShell.classList.toggle("onboarding-mode", isOnboarding);
+  elements.appShell.classList.toggle("setup-open", !isOnboarding);
   elements.onboardingPanel.classList.toggle("hidden", !isOnboarding);
   elements.prepaidPanel.classList.toggle("hidden", isOnboarding);
 
@@ -2602,10 +2604,15 @@ function scrollToViewSection(viewName) {
   },
 );
 
-elements.onboardingStartButton.addEventListener("click", () => {
+function openTripSetup() {
+  elements.appShell.classList.add("setup-open");
+  setActiveView("settings");
   elements.tripName.focus();
   elements.tripName.scrollIntoView({ behavior: "smooth", block: "center" });
-});
+}
+
+elements.heroStartButton.addEventListener("click", openTripSetup);
+elements.onboardingStartButton.addEventListener("click", openTripSetup);
 
 elements.tripSelector.addEventListener("change", () => {
   switchTrip(elements.tripSelector.value);

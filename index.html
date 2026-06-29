@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TripFlow 여행 관리</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=10-tripflow-tabs-copy" />
+    <link rel="stylesheet" href="style.css?v=12-photo-editorial" />
   </head>
   <body>
     <main class="app-shell">
       <section class="topbar" aria-label="여행 요약">
-        <div>
-          <p class="eyebrow">TripFlow</p>
-          <h1 id="tripTitle">여행 관리</h1>
-          <p id="tripMeta" class="muted">여행 전 준비, 여행 중 기록, 여행 후 정산과 리포트까지 관리해 보세요</p>
+        <div class="hero-copy">
+          <h1 class="brand-logo">TRIPFLOW</h1>
+          <button id="heroStartButton" class="hero-button" type="button">새 여행 시작하기</button>
+        </div>
+        <div class="hero-status" aria-label="현재 여행 정보">
+          <span>Current Trip</span>
+          <strong id="tripTitle">여행 관리</strong>
+          <p id="tripMeta">현재 여행 정보를 한눈에 확인하세요</p>
         </div>
         <button id="resetButton" class="icon-button" type="button" title="초기화" aria-label="초기화">
           <span aria-hidden="true">↺</span>
@@ -43,7 +47,7 @@
             <p>여행 중 지출을 남기고, 여행 후 정산과 리포트를 확인합니다.</p>
           </div>
         </div>
-        <button id="onboardingStartButton" class="primary-button" type="button">여행 관리 시작하기</button>
+        <button id="onboardingStartButton" class="primary-button" type="button">새 여행 시작하기</button>
       </section>
 
       <section class="workflow-strip" aria-label="여행 관리 흐름">
@@ -65,14 +69,38 @@
       </section>
 
       <nav class="tabs" aria-label="앱 메뉴">
-        <button class="tab-button active" type="button" data-view="pretrip">준비</button>
-        <button class="tab-button" type="button" data-view="today">오늘</button>
-        <button class="tab-button" type="button" data-view="plan">일정</button>
-        <button class="tab-button" type="button" data-view="expenses">경비</button>
-        <button class="tab-button" type="button" data-view="settlement">정산</button>
-        <button class="tab-button" type="button" data-view="report">리포트</button>
-        <button class="tab-button" type="button" data-view="share">공유</button>
-        <button class="tab-button" type="button" data-view="settings">설정</button>
+        <button class="tab-button active" type="button" data-view="pretrip">
+          <span class="tab-stage">Before</span>
+          <span class="tab-label">준비</span>
+        </button>
+        <button class="tab-button" type="button" data-view="today">
+          <span class="tab-stage">During</span>
+          <span class="tab-label">오늘</span>
+        </button>
+        <button class="tab-button" type="button" data-view="plan">
+          <span class="tab-stage">During</span>
+          <span class="tab-label">일정</span>
+        </button>
+        <button class="tab-button" type="button" data-view="expenses">
+          <span class="tab-stage">During</span>
+          <span class="tab-label">경비</span>
+        </button>
+        <button class="tab-button" type="button" data-view="settlement">
+          <span class="tab-stage">After</span>
+          <span class="tab-label">정산</span>
+        </button>
+        <button class="tab-button" type="button" data-view="report">
+          <span class="tab-stage">After</span>
+          <span class="tab-label">리포트</span>
+        </button>
+        <button class="tab-button" type="button" data-view="share">
+          <span class="tab-stage">Share</span>
+          <span class="tab-label">공유</span>
+        </button>
+        <button class="tab-button" type="button" data-view="settings">
+          <span class="tab-stage">Settings</span>
+          <span class="tab-label">설정</span>
+        </button>
       </nav>
 
       <section id="settingsView" class="view" aria-labelledby="settingsTitle">
@@ -589,7 +617,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js?v=10-tripflow-tabs-copy"></script>
-    <script src="app.js?v=10-tripflow-tabs-copy"></script>
+    <script src="supabase-config.js?v=12-photo-editorial"></script>
+    <script src="app.js?v=12-photo-editorial"></script>
   </body>
 </html>
