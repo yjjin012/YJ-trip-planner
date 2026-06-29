@@ -973,10 +973,10 @@ function renderTripHeader() {
   const { name, destination, startDate, endDate, budget, commonFund } = state.trip;
   applyHeroImage(destinationImageUrl(destination));
   maybeLoadHeroImage(destination);
-  elements.tripTitle.textContent = name || "나의 여행";
+  elements.tripTitle.textContent = name || "여행 관리";
 
   if (!startDate || !endDate) {
-    elements.tripMeta.textContent = "여행 정보를 입력해 주세요";
+    elements.tripMeta.textContent = "여행 전 준비부터 여행 중 기록, 여행 후 정산과 회고까지 관리해 보세요";
     return;
   }
 
@@ -997,11 +997,11 @@ function renderChecklist() {
   const doneCount = checklist.filter((item) => item.checked).length;
   elements.checklistProgress.textContent = checklist.length
     ? `${doneCount}/${checklist.length} 완료`
-    : "준비 항목을 추가해 주세요";
+    : "준비물을 추가해 주세요";
   elements.checklistList.innerHTML = "";
 
   if (!checklist.length) {
-    elements.checklistList.innerHTML = `<div class="empty-state">여행 전에 챙길 일을 추가해 주세요.</div>`;
+    elements.checklistList.innerHTML = `<div class="empty-state">여행 전에 챙길 준비물을 추가해 주세요.</div>`;
     return;
   }
 
@@ -1013,7 +1013,7 @@ function renderChecklist() {
         ${item.checked ? "✓" : ""}
       </button>
       <span>${escapeHtml(item.text)}</span>
-      <button class="delete-button" type="button" data-delete-checklist="${item.id}" title="준비 항목 삭제" aria-label="준비 항목 삭제">×</button>
+        <button class="delete-button" type="button" data-delete-checklist="${item.id}" title="준비물 삭제" aria-label="준비물 삭제">×</button>
     `;
     elements.checklistList.append(row);
   });
@@ -1042,11 +1042,11 @@ function renderOnboardingMode() {
   const submitButton = elements.tripForm.querySelector('button[type="submit"]');
 
   if (submitButton) {
-    submitButton.textContent = isOnboarding ? "기본 정보 저장" : "여행 저장";
+    submitButton.textContent = isOnboarding ? "여행 관리 시작" : "여행 저장";
   }
 
   if (isOnboarding) {
-    elements.saveStatus.textContent = "기본 정보를 저장하면 다음 단계가 열립니다";
+    elements.saveStatus.textContent = "기본 정보를 저장하면 준비, 기록, 정산 화면이 열립니다";
     setActiveView("settings");
   }
 }
@@ -1080,11 +1080,11 @@ function renderKrwPreview(inputElement, outputElement) {
 
 function renderPrepaidCosts() {
   const prepaidGroups = groupAmountsByCurrency(state.prepaidCosts);
-  elements.prepaidSummary.textContent = `미리 결제 ${formatMoneyGroups(prepaidGroups)}`;
+  elements.prepaidSummary.textContent = `선결제 ${formatMoneyGroups(prepaidGroups)}`;
   elements.prepaidList.innerHTML = "";
 
   if (!state.prepaidCosts.length) {
-    elements.prepaidList.innerHTML = `<div class="empty-state">항공, 숙박, 입장권처럼 미리 결제한 비용을 추가해 주세요.</div>`;
+    elements.prepaidList.innerHTML = `<div class="empty-state">항공, 숙박, 입장권처럼 여행 전에 결제한 비용을 추가해 주세요.</div>`;
     return;
   }
 
@@ -1233,7 +1233,7 @@ function renderTodayLists(date, plans, expenses) {
 
   if (!date) {
     elements.todayPlansList.innerHTML = `<div class="empty-state">여행 기간을 저장하면 오늘 일정이 보입니다.</div>`;
-    elements.todayExpensesList.innerHTML = `<div class="empty-state">여행 기간을 저장하면 오늘 경비가 보입니다.</div>`;
+    elements.todayExpensesList.innerHTML = `<div class="empty-state">여행 기간을 저장하면 오늘 지출이 보입니다.</div>`;
     return;
   }
 
@@ -1251,7 +1251,7 @@ function renderTodayLists(date, plans, expenses) {
   }
 
   if (!expenses.length) {
-    elements.todayExpensesList.innerHTML = `<div class="empty-state">이 날짜에는 아직 경비가 없습니다.</div>`;
+    elements.todayExpensesList.innerHTML = `<div class="empty-state">이 날짜에는 아직 지출 기록이 없습니다.</div>`;
   } else {
     const settlementMap = settlementAmountByExpense();
     expenses.forEach((expense) => {
@@ -1575,7 +1575,7 @@ function renderDayTabs() {
   });
 
   const { actual } = totalsForDate(state.selectedDate);
-  elements.daySummary.textContent = `이 날짜 실제 경비 ${formatMoney(actual)}`;
+  elements.daySummary.textContent = `이 날짜 지출 ${formatMoney(actual)}`;
 }
 
 function renderPlanEditState() {
@@ -1689,10 +1689,10 @@ function renderExpenseList() {
   elements.expensesList.innerHTML = "";
 
   const total = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
-  elements.expenseSummary.textContent = `총 실제 경비 ${formatMoney(total)}`;
+  elements.expenseSummary.textContent = `총 지출 ${formatMoney(total)}`;
 
   if (!expenses.length) {
-    elements.expensesList.innerHTML = `<div class="empty-state">아직 기록된 경비가 없습니다.</div>`;
+    elements.expensesList.innerHTML = `<div class="empty-state">아직 기록된 지출이 없습니다.</div>`;
     return;
   }
 
@@ -1917,7 +1917,7 @@ function renderBreakdown(container, rows) {
 function exportTripData(accessMode = "owner") {
   const isCompanionFile = accessMode === "companion";
   const backup = {
-    app: "solo-trip-planner",
+    app: "tripflow-travel-manager",
     version: 6,
     scope: "single-trip",
     accessMode,
@@ -1937,8 +1937,8 @@ function exportTripData(accessMode = "owner") {
   URL.revokeObjectURL(link.href);
   setBackupStatus(
     isCompanionFile
-      ? `${fileName} 파일로 저장했습니다. 동행자는 이 여행 하나만 볼 수 있습니다.`
-      : `${fileName} 파일로 저장했습니다. 이 파일에는 현재 여행 하나만 담깁니다.`,
+      ? `${fileName} 파일로 저장했습니다. 동행자는 이 여행의 준비, 일정, 지출, 정산만 볼 수 있습니다.`
+      : `${fileName} 파일로 저장했습니다. 이 파일에는 현재 여행의 관리 데이터만 담깁니다.`,
   );
 }
 
@@ -1963,7 +1963,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
   const days = dateRange(trip.startDate, trip.endDate);
   const totals = totalsForTripState(tripState);
   const fund = commonFundStatus(tripState.expenses, trip, tripState.prepaidCosts);
-  const title = trip.name.trim() || "나의 여행";
+  const title = trip.name.trim() || "여행 관리";
   const destination = trip.destination.trim();
   const heroImage = destinationImageUrl(destination);
   const period = trip.startDate && trip.endDate ? `${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}` : "날짜 미정";
@@ -1987,7 +1987,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
           `,
         )
         .join("")
-    : `<li class="empty">준비 체크리스트가 없습니다.</li>`;
+    : `<li class="empty">준비물 체크리스트가 없습니다.</li>`;
   const prepaidRows = tripState.prepaidCosts.length
     ? tripState.prepaidCosts
         .map(
@@ -1999,7 +1999,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
           `,
         )
         .join("")
-    : `<li class="empty">미리 결제한 경비가 없습니다.</li>`;
+    : `<li class="empty">선결제 경비가 없습니다.</li>`;
   const expenseRows = expenses.length
     ? expenses
         .map((expense) => {
@@ -2014,7 +2014,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
           `;
         })
         .join("")
-    : `<li class="empty">기록된 경비가 없습니다.</li>`;
+    : `<li class="empty">기록된 지출이 없습니다.</li>`;
   const settlementViewRows = settlementRowsForTripState(tripState);
   const settlementRowsHtml = settlementViewRows.length
     ? settlementViewRows
@@ -2083,7 +2083,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(title)} 공유 보기</title>
+    <title>${escapeHtml(title)} 여행 관리 보기</title>
     <style>
       :root { color-scheme: light; --ink:#17202a; --muted:#667085; --line:#d9dee8; --paper:#fff; --bg:#eef2f6; --teal:#0f766e; --mint:#d9f2ec; --coral:#e76f51; }
       * { box-sizing: border-box; }
@@ -2126,12 +2126,12 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
   <body>
     <main>
       <header>
-        <p class="eyebrow">Trip View</p>
+        <p class="eyebrow">Tripflow</p>
         <h1>${escapeHtml(title)}</h1>
         <p class="muted">${escapeHtml(meta)}</p>
       </header>
       <section>
-        <h2>여행 정보</h2>
+        <h2>여행 요약</h2>
         <div class="summary">
           <div class="metric"><span>여행지</span><strong>${escapeHtml(destination || "미정")}</strong></div>
           <div class="metric"><span>여행 기간</span><strong>${escapeHtml(period)}</strong></div>
@@ -2146,7 +2146,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
         </div>
       </section>
       <section class="schedule-section">
-        <h2>날짜별 일정</h2>
+        <h2>여행 중 일정</h2>
         ${
           dayTabs
             ? `<nav class="day-tabs" aria-label="날짜 선택">
@@ -2157,19 +2157,19 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
         ${daySections}
       </section>
       <section>
-        <h2>여행 준비 체크리스트</h2>
+        <h2>여행 전 준비물</h2>
         <ul>${checklistRows}</ul>
       </section>
       <section>
-        <h2>미리 결제한 경비</h2>
+        <h2>선결제 경비</h2>
         <ul>${prepaidRows}</ul>
       </section>
       <section>
-        <h2>경비 내역</h2>
+        <h2>여행 중 지출</h2>
         <ul>${expenseRows}</ul>
       </section>
       <section>
-        <h2>간단 정산</h2>
+        <h2>여행 후 정산</h2>
         <p class="muted">공용 준비금을 넘은 공용 경비 기준</p>
         <ul>${settlementRowsHtml}</ul>
       </section>
@@ -2177,7 +2177,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
         <h2>참여자</h2>
         <p>${escapeHtml(tripState.participants.join(", "))}</p>
       </section>
-      <footer>보기 전용 공유 파일입니다. 수정이나 자동 동기화는 원래 앱에서 진행해 주세요.</footer>
+      <footer>보기 전용 여행 관리 파일입니다. 수정이나 자동 동기화는 원래 앱에서 진행해 주세요.</footer>
     </main>
     <script>
       document.querySelectorAll(".day-button").forEach((button) => {
@@ -2259,25 +2259,25 @@ function comparePlans(a, b) {
 }
 
 function tripViewFileName(tripState) {
-  const baseName = tripState.trip.name.trim() || "solo-trip";
+  const baseName = tripState.trip.name.trim() || "tripflow";
   const safeName = baseName
     .replace(/[\\/:*?"<>|]/g, "")
     .replace(/\s+/g, "-")
     .slice(0, 40)
     .toLowerCase();
 
-  return `${safeName || "solo-trip"}-view-${localDateString()}.html`;
+  return `${safeName || "tripflow"}-view-${localDateString()}.html`;
 }
 
 function backupFileName() {
-  const baseName = state.trip.name.trim() || "solo-trip";
+  const baseName = state.trip.name.trim() || "tripflow";
   const safeName = baseName
     .replace(/[\\/:*?"<>|]/g, "")
     .replace(/\s+/g, "-")
     .slice(0, 40)
     .toLowerCase();
 
-  return `${safeName || "solo-trip"}-backup-${localDateString()}.json`;
+  return `${safeName || "tripflow"}-backup-${localDateString()}.json`;
 }
 
 function importTripData(file) {

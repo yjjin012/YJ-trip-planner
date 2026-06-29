@@ -95,7 +95,7 @@ button {
   right: 28px;
   top: 28px;
   z-index: 0;
-  content: "TRAVEL DASHBOARD";
+  content: "TRIP MANAGEMENT";
   color: rgba(255, 255, 255, 0.78);
   font-size: 0.72rem;
   font-weight: 700;
@@ -298,6 +298,42 @@ h3 {
 
 .app-shell.onboarding-mode .trip-setup {
   margin-top: 12px;
+}
+
+.workflow-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 18px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+.workflow-strip article {
+  display: grid;
+  gap: 7px;
+  min-height: 112px;
+  background: #fff;
+  padding: 16px;
+}
+
+.workflow-strip span {
+  color: var(--teal);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.workflow-strip strong {
+  font-size: 1.02rem;
+  font-weight: 650;
+}
+
+.workflow-strip p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .owner-actions {
@@ -1118,12 +1154,16 @@ select:focus {
     order: 2;
   }
 
-  .tabs {
+  .workflow-strip {
     order: 3;
   }
 
-  .view {
+  .tabs {
     order: 4;
+  }
+
+  .view {
+    order: 5;
   }
 
   .form-grid,
@@ -1135,6 +1175,7 @@ select:focus {
   .cloud-form,
   .onboarding-panel,
   .onboarding-steps,
+  .workflow-strip,
   .owner-panel,
   .owner-actions,
   .today-grid,
@@ -1187,6 +1228,10 @@ select:focus {
     align-items: stretch;
   }
 
+  .workflow-strip article {
+    min-height: auto;
+  }
+
   .onboarding-steps li {
     min-height: auto;
   }
@@ -1201,7 +1246,8 @@ select:focus {
   .owner-panel,
   .trip-setup,
   .view,
-  .onboarding-panel {
+  .onboarding-panel,
+  .workflow-strip article {
     padding: 14px;
   }
 

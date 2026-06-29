@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solo Trip Planner</title>
+    <title>Tripflow 여행 관리</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=8-mobile-money-cache-fix" />
+    <link rel="stylesheet" href="style.css?v=9-trip-manager-copy" />
   </head>
   <body>
     <main class="app-shell">
       <section class="topbar" aria-label="여행 요약">
         <div>
-          <p class="eyebrow">Solo Trip Planner</p>
-          <h1 id="tripTitle">나의 여행</h1>
-          <p id="tripMeta" class="muted">여행 정보를 입력해 주세요</p>
+          <p class="eyebrow">Tripflow</p>
+          <h1 id="tripTitle">여행 관리</h1>
+          <p id="tripMeta" class="muted">여행 전 준비부터 여행 중 기록, 여행 후 정산과 회고까지 관리해 보세요</p>
         </div>
         <button id="resetButton" class="icon-button" type="button" title="초기화" aria-label="초기화">
           <span aria-hidden="true">↺</span>
@@ -23,37 +23,55 @@
       <section id="onboardingPanel" class="onboarding-panel" aria-labelledby="onboardingTitle">
         <div class="onboarding-copy">
           <p class="eyebrow">Start</p>
-          <h2 id="onboardingTitle">처음 여행을 만들고 있어요</h2>
-          <p class="muted">먼저 기본 정보를 저장하면 선결제 경비, 오늘 경비 기록, 일정 관리가 차례로 열립니다.</p>
+          <h2 id="onboardingTitle">여행 준비부터 정산까지 한 번에 관리해요</h2>
+          <p class="muted">기본 정보를 저장하면 여행 전 준비, 여행 중 기록, 여행 후 정산과 리포트가 순서대로 이어집니다.</p>
         </div>
         <ol class="onboarding-steps">
           <li class="active">
             <span>1</span>
             <strong>여행 기본 정보 입력</strong>
-            <p>여행 이름, 날짜, 예산, 화폐를 먼저 저장합니다.</p>
+            <p>여행 이름, 날짜, 예산, 현지 화폐를 먼저 저장합니다.</p>
           </li>
           <li>
             <span>2</span>
-            <strong>미리 결제한 경비 입력</strong>
-            <p>항공권, 숙박, 입장권처럼 먼저 쓴 돈을 기록합니다.</p>
+            <strong>여행 전 준비 정리</strong>
+            <p>항공권, 숙박, 입장권 같은 선결제와 준비물을 정리합니다.</p>
           </li>
           <li>
             <span>3</span>
-            <strong>오늘 화면에서 경비 기록</strong>
-            <p>여행 중에는 빠른 경비 입력으로 바로 기록합니다.</p>
+            <strong>기록하고 정산하기</strong>
+            <p>여행 중 지출을 남기고, 다녀온 뒤 정산과 리포트를 확인합니다.</p>
           </li>
         </ol>
-        <button id="onboardingStartButton" class="primary-button" type="button">기본 정보 입력하기</button>
+        <button id="onboardingStartButton" class="primary-button" type="button">여행 관리 시작하기</button>
+      </section>
+
+      <section class="workflow-strip" aria-label="여행 관리 흐름">
+        <article>
+          <span>여행 전</span>
+          <strong>준비와 계획</strong>
+          <p>기본 정보, 준비물, 선결제 경비, 날짜별 일정을 정리합니다.</p>
+        </article>
+        <article>
+          <span>여행 중</span>
+          <strong>오늘 기록</strong>
+          <p>날씨를 확인하고 실제 지출과 일정 변경을 바로 남깁니다.</p>
+        </article>
+        <article>
+          <span>여행 후</span>
+          <strong>정산과 회고</strong>
+          <p>총 지출, 개인 경비, 공용 경비, 정산 내역을 한 번에 확인합니다.</p>
+        </article>
       </section>
 
       <nav class="tabs" aria-label="앱 메뉴">
-        <button class="tab-button active" type="button" data-view="pretrip">준비</button>
-        <button class="tab-button" type="button" data-view="checklist">체크리스트</button>
-        <button class="tab-button" type="button" data-view="today">오늘</button>
+        <button class="tab-button active" type="button" data-view="pretrip">사전준비</button>
+        <button class="tab-button" type="button" data-view="checklist">준비물</button>
+        <button class="tab-button" type="button" data-view="today">여행중</button>
         <button class="tab-button" type="button" data-view="plan">일정</button>
-        <button class="tab-button" type="button" data-view="expenses">경비</button>
-        <button class="tab-button" type="button" data-view="report">리포트</button>
-        <button class="tab-button" type="button" data-view="settings">설정</button>
+        <button class="tab-button" type="button" data-view="expenses">지출</button>
+        <button class="tab-button" type="button" data-view="report">정산·회고</button>
+        <button class="tab-button" type="button" data-view="settings">여행관리</button>
         <button class="tab-button" type="button" data-view="share">공유</button>
       </nav>
 
@@ -78,7 +96,7 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Settings</p>
-              <h2 id="settingsTitle">여행 설정</h2>
+              <h2 id="settingsTitle">여행 기본 정보</h2>
             </div>
             <p id="saveStatus" class="save-status">자동 저장됨</p>
           </div>
@@ -142,11 +160,11 @@
         <section class="prepaid-panel" aria-labelledby="prepaidTitle">
           <div class="section-heading compact-heading">
             <div>
-              <p class="eyebrow">Before</p>
-              <h2 id="pretripTitle">여행 전 준비</h2>
-              <h3 id="prepaidTitle">미리 결제한 경비</h3>
+              <p class="eyebrow">Before Trip</p>
+              <h2 id="pretripTitle">사전 준비</h2>
+              <h3 id="prepaidTitle">선결제 경비</h3>
             </div>
-            <p id="prepaidSummary" class="muted">항공, 숙박, 입장권 등을 기록해 주세요</p>
+            <p id="prepaidSummary" class="muted">항공, 숙박, 입장권처럼 여행 전에 결제한 비용을 기록해 주세요</p>
           </div>
 
           <form id="prepaidForm" class="prepaid-form">
@@ -186,7 +204,7 @@
                 <option value="CAD">CAD</option>
               </select>
             </label>
-            <button class="primary-button" type="submit">고정 경비 추가</button>
+            <button class="primary-button" type="submit">선결제 경비 추가</button>
           </form>
 
           <div id="prepaidList" class="item-list" aria-live="polite"></div>
@@ -196,8 +214,8 @@
       <section id="todayView" class="view" aria-labelledby="todayTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Today</p>
-            <h2 id="todayTitle">오늘 화면</h2>
+            <p class="eyebrow">During Trip</p>
+            <h2 id="todayTitle">여행 중 기록</h2>
           </div>
           <p id="todayDateLabel" class="muted">여행 기간을 저장해 주세요</p>
         </div>
@@ -255,8 +273,8 @@
         <section class="quick-expense-card" aria-labelledby="quickExpenseTitle">
           <div class="section-heading compact-heading">
             <div>
-              <p class="eyebrow">Quick</p>
-              <h3 id="quickExpenseTitle">빠른 경비 입력</h3>
+              <p class="eyebrow">Quick Log</p>
+              <h3 id="quickExpenseTitle">빠른 지출 기록</h3>
             </div>
             <p id="quickExpenseStatus" class="muted">저장 대기</p>
           </div>
@@ -296,7 +314,7 @@
             <div id="todayPlansList" class="mini-list"></div>
           </section>
           <section class="report-block" aria-labelledby="todayExpensesTitle">
-            <h3 id="todayExpensesTitle">오늘 경비</h3>
+            <h3 id="todayExpensesTitle">오늘 지출</h3>
             <div id="todayExpensesList" class="mini-list"></div>
           </section>
         </div>
@@ -305,15 +323,15 @@
       <section id="checklistView" class="view" aria-labelledby="checklistTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Checklist</p>
-            <h2 id="checklistTitle">체크리스트</h2>
+            <p class="eyebrow">Packing</p>
+            <h2 id="checklistTitle">준비물 체크리스트</h2>
           </div>
           <p id="checklistProgress" class="muted">준비 전</p>
         </div>
 
         <form id="checklistForm" class="checklist-form">
           <label>
-            준비할 일
+            준비할 항목
             <input id="checklistText" name="checklistText" type="text" placeholder="예: 공항버스 예매" />
           </label>
           <button class="primary-button" type="submit">추가</button>
@@ -325,7 +343,7 @@
       <section id="planView" class="view" aria-labelledby="planTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">During</p>
+            <p class="eyebrow">Plan</p>
             <h2 id="planTitle">날짜별 일정</h2>
           </div>
           <p id="daySummary" class="muted">일정을 추가해 보세요</p>
@@ -356,10 +374,10 @@
       <section id="expensesView" class="view" aria-labelledby="expenseTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">During</p>
-            <h2 id="expenseTitle">실제 경비</h2>
+            <p class="eyebrow">Expense Log</p>
+            <h2 id="expenseTitle">지출 기록</h2>
           </div>
-          <p id="expenseSummary" class="muted">쓴 돈을 기록해 주세요</p>
+          <p id="expenseSummary" class="muted">여행 중 실제로 쓴 돈을 기록해 주세요</p>
         </div>
 
         <form id="expenseForm" class="entry-form">
@@ -414,10 +432,10 @@
       <section id="reportView" class="view" aria-labelledby="reportTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">After</p>
-            <h2 id="reportTitle">여행 리포트</h2>
+            <p class="eyebrow">After Trip</p>
+            <h2 id="reportTitle">정산과 회고</h2>
           </div>
-          <p class="muted">미리 결제한 비용과 여행 중 지출을 함께 봅니다</p>
+          <p class="muted">선결제 비용, 여행 중 지출, 개인 경비와 공용 정산을 함께 확인합니다</p>
         </div>
 
         <div class="report-grid">
@@ -434,11 +452,11 @@
             <strong id="commonFundRemaining">0</strong>
           </article>
           <article class="metric">
-            <span>미리 결제</span>
+            <span>선결제</span>
             <strong id="plannedTotal">0</strong>
           </article>
           <article class="metric">
-            <span>총 실제 경비</span>
+            <span>총 지출</span>
             <strong id="actualTotal">0</strong>
           </article>
           <article class="metric">
@@ -488,7 +506,7 @@
             <div id="settlementBreakdown" class="mini-list"></div>
           </section>
           <section class="report-block" aria-labelledby="prepaidBreakdownTitle">
-            <h3 id="prepaidBreakdownTitle">미리 결제한 경비</h3>
+            <h3 id="prepaidBreakdownTitle">선결제 경비</h3>
             <div id="prepaidBreakdown" class="mini-list"></div>
           </section>
         </div>
@@ -497,10 +515,10 @@
       <section id="shareView" class="view" aria-labelledby="shareTitle">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Later</p>
-            <h2 id="shareTitle">공유 준비</h2>
+            <p class="eyebrow">Share</p>
+            <h2 id="shareTitle">공유와 백업</h2>
           </div>
-          <p class="muted">현재 여행 하나만 공유합니다</p>
+          <p class="muted">현재 여행 하나를 공유하거나 여러 기기에서 이어서 관리합니다</p>
         </div>
         <div class="share-panel">
           <p>
@@ -522,7 +540,7 @@
           <div class="backup-panel">
             <div>
               <p class="eyebrow">Backup</p>
-              <h3>현재 여행 파일</h3>
+              <h3>여행 데이터 파일</h3>
               <p id="backupStatus" class="muted">현재 여행 하나를 파일로 저장하거나 새 여행으로 불러올 수 있습니다.</p>
             </div>
             <div class="backup-actions">
@@ -571,7 +589,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js?v=8-mobile-money-cache-fix"></script>
-    <script src="app.js?v=8-mobile-money-cache-fix"></script>
+    <script src="supabase-config.js?v=9-trip-manager-copy"></script>
+    <script src="app.js?v=9-trip-manager-copy"></script>
   </body>
 </html>
