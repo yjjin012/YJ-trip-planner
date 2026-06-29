@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TripFlow 여행 관리</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="stylesheet" href="style.css?v=19-manual-cloud-sync" />
+    <link rel="stylesheet" href="style.css?v=21-compact-onboarding" />
   </head>
   <body>
     <main class="app-shell">
@@ -26,27 +26,59 @@
       <section id="onboardingPanel" class="onboarding-panel" aria-labelledby="onboardingTitle">
         <div class="onboarding-copy">
           <p class="eyebrow">Start</p>
-          <h2 id="onboardingTitle">여행 전 준비부터 리포트까지 한 번에 관리해요</h2>
-          <p class="muted">기본 정보를 저장하면 준비, 오늘 기록, 일정, 경비, 정산, 리포트가 자연스럽게 이어집니다.</p>
+          <h2 id="onboardingTitle">여행을 만들거나 불러오세요</h2>
+          <p class="muted">처음이면 새 여행을 만들고, 이미 저장했다면 클라우드에서 불러오세요.</p>
         </div>
         <div class="onboarding-steps" role="list">
           <div class="active" role="listitem">
             <span>1</span>
-            <strong>여행 기본 정보 입력</strong>
-            <p>여행 이름, 날짜, 예산, 현지 화폐를 먼저 저장합니다.</p>
+            <strong>기본 정보</strong>
+            <p>이름·날짜·예산</p>
           </div>
           <div role="listitem">
             <span>2</span>
-            <strong>준비와 일정 정리</strong>
-            <p>항공권, 숙박, 입장권 같은 선결제와 준비물을 정리합니다.</p>
+            <strong>준비와 일정</strong>
+            <p>선결제·준비물·동선</p>
           </div>
           <div role="listitem">
             <span>3</span>
-            <strong>기록, 정산, 리포트 확인</strong>
-            <p>여행 중 지출을 남기고, 여행 후 정산과 리포트를 확인합니다.</p>
+            <strong>기록과 정산</strong>
+            <p>지출·정산·리포트</p>
           </div>
         </div>
-        <button id="onboardingStartButton" class="primary-button" type="button">새 여행 시작하기</button>
+        <section class="onboarding-cloud-panel" aria-labelledby="onboardingCloudTitle">
+          <div>
+            <p class="eyebrow">Cloud</p>
+            <h3 id="onboardingCloudTitle">기존 여행 불러오기</h3>
+            <p id="onboardingCloudStatus" class="muted">이미 맥에서 저장했다면 같은 계정으로 로그인한 뒤 클라우드에서 불러오세요.</p>
+            <p id="onboardingCloudLastSaved" class="muted small-note">마지막 클라우드 저장: 없음</p>
+          </div>
+          <form id="onboardingCloudForm" class="cloud-form">
+            <label>
+              이메일
+              <input id="onboardingCloudEmail" name="onboardingCloudEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+            </label>
+            <label>
+              비밀번호
+              <input
+                id="onboardingCloudPassword"
+                name="onboardingCloudPassword"
+                type="password"
+                placeholder="6자 이상"
+                autocomplete="current-password"
+              />
+            </label>
+            <div class="cloud-actions">
+              <button id="onboardingCloudSignupButton" class="secondary-button" type="button">가입</button>
+              <button id="onboardingCloudLoginButton" class="primary-button" type="button">로그인</button>
+              <button id="onboardingCloudLogoutButton" class="secondary-button hidden" type="button">로그아웃</button>
+            </div>
+          </form>
+          <div class="cloud-actions">
+            <button id="onboardingCloudDownloadButton" class="secondary-button" type="button">클라우드에서 불러오기</button>
+            <button id="onboardingStartButton" class="primary-button" type="button">새 여행 시작하기</button>
+          </div>
+        </section>
       </section>
 
       <section class="workflow-strip" aria-label="여행 관리 흐름">
@@ -630,7 +662,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js?v=19-manual-cloud-sync"></script>
-    <script src="app.js?v=19-manual-cloud-sync"></script>
+    <script src="supabase-config.js?v=21-compact-onboarding"></script>
+    <script src="app.js?v=21-compact-onboarding"></script>
   </body>
 </html>

@@ -94,6 +94,15 @@ const elements = {
   tripMeta: document.querySelector("#tripMeta"),
   onboardingPanel: document.querySelector("#onboardingPanel"),
   onboardingStartButton: document.querySelector("#onboardingStartButton"),
+  onboardingCloudForm: document.querySelector("#onboardingCloudForm"),
+  onboardingCloudEmail: document.querySelector("#onboardingCloudEmail"),
+  onboardingCloudPassword: document.querySelector("#onboardingCloudPassword"),
+  onboardingCloudSignupButton: document.querySelector("#onboardingCloudSignupButton"),
+  onboardingCloudLoginButton: document.querySelector("#onboardingCloudLoginButton"),
+  onboardingCloudLogoutButton: document.querySelector("#onboardingCloudLogoutButton"),
+  onboardingCloudDownloadButton: document.querySelector("#onboardingCloudDownloadButton"),
+  onboardingCloudStatus: document.querySelector("#onboardingCloudStatus"),
+  onboardingCloudLastSaved: document.querySelector("#onboardingCloudLastSaved"),
   ownerPanel: document.querySelector("#ownerPanel"),
   tripSelector: document.querySelector("#tripSelector"),
   newTripButton: document.querySelector("#newTripButton"),
@@ -381,16 +390,22 @@ function setCloudStatus(message) {
   if (elements.cloudStatus) {
     elements.cloudStatus.textContent = message;
   }
+
+  if (elements.onboardingCloudStatus) {
+    elements.onboardingCloudStatus.textContent = message;
+  }
 }
 
 function setCloudLastSaved(updatedAt) {
-  if (!elements.cloudLastSaved) {
-    return;
+  const message = updatedAt ? `마지막 클라우드 저장: ${formatDateTime(updatedAt)}` : "마지막 클라우드 저장: 없음";
+
+  if (elements.cloudLastSaved) {
+    elements.cloudLastSaved.textContent = message;
   }
 
-  elements.cloudLastSaved.textContent = updatedAt
-    ? `마지막 클라우드 저장: ${formatDateTime(updatedAt)}`
-    : "마지막 클라우드 저장: 없음";
+  if (elements.onboardingCloudLastSaved) {
+    elements.onboardingCloudLastSaved.textContent = message;
+  }
 }
 
 function renderCloudControls() {
@@ -401,14 +416,28 @@ function renderCloudControls() {
   const configured = isCloudConfigured();
   const loggedIn = Boolean(cloudUser);
   const setupDisabled = !configured;
+  const authInputs = [
+    elements.cloudEmail,
+    elements.cloudPassword,
+    elements.cloudSignupButton,
+    elements.cloudLoginButton,
+    elements.onboardingCloudEmail,
+    elements.onboardingCloudPassword,
+    elements.onboardingCloudSignupButton,
+    elements.onboardingCloudLoginButton,
+  ].filter(Boolean);
 
-  [elements.cloudEmail, elements.cloudPassword, elements.cloudSignupButton, elements.cloudLoginButton].forEach((item) => {
+  authInputs.forEach((item) => {
     item.disabled = setupDisabled || loggedIn;
   });
 
   elements.cloudLogoutButton.classList.toggle("hidden", !loggedIn);
+  elements.onboardingCloudLogoutButton?.classList.toggle("hidden", !loggedIn);
   elements.cloudUploadButton.disabled = !loggedIn;
   elements.cloudDownloadButton.disabled = !loggedIn;
+  if (elements.onboardingCloudDownloadButton) {
+    elements.onboardingCloudDownloadButton.disabled = !loggedIn;
+  }
 
   if (!configured) {
     setCloudStatus("supabase-config.js에 Supabase 주소와 공개 키를 넣으면 클라우드 저장을 켤 수 있습니다.");
@@ -550,8 +579,7 @@ async function signUpToCloud() {
     return;
   }
 
-  const email = elements.cloudEmail.value.trim();
-  const password = elements.cloudPassword.value;
+  const { email, password } = cloudCredentials();
 
   if (!email || password.length < 6) {
     setCloudStatus("이메일과 6자 이상의 비밀번호를 입력해 주세요.");
@@ -570,14 +598,25 @@ async function signUpToCloud() {
   setCloudStatus("가입 완료. 이메일 확인이 켜져 있다면 메일 확인 후 로그인해 주세요.");
 }
 
+function cloudCredentials() {
+  const onboardingEmail = elements.onboardingCloudEmail?.value.trim() || "";
+  const onboardingPassword = elements.onboardingCloudPassword?.value || "";
+  const shareEmail = elements.cloudEmail?.value.trim() || "";
+  const sharePassword = elements.cloudPassword?.value || "";
+
+  return {
+    email: onboardingEmail || shareEmail,
+    password: onboardingPassword || sharePassword,
+  };
+}
+
 async function loginToCloud() {
   if (!cloudClient) {
     setCloudStatus("Supabase 설정을 먼저 넣어 주세요.");
     return;
   }
 
-  const email = elements.cloudEmail.value.trim();
-  const password = elements.cloudPassword.value;
+  const { email, password } = cloudCredentials();
 
   if (!email || !password) {
     setCloudStatus("이메일과 비밀번호를 입력해 주세요.");
@@ -2855,7 +2894,15 @@ elements.cloudForm.addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
+elements.onboardingCloudForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
 elements.cloudSignupButton.addEventListener("click", () => {
+  signUpToCloud();
+});
+
+elements.onboardingCloudSignupButton?.addEventListener("click", () => {
   signUpToCloud();
 });
 
@@ -2863,7 +2910,15 @@ elements.cloudLoginButton.addEventListener("click", () => {
   loginToCloud();
 });
 
+elements.onboardingCloudLoginButton?.addEventListener("click", () => {
+  loginToCloud();
+});
+
 elements.cloudLogoutButton.addEventListener("click", () => {
+  logoutFromCloud();
+});
+
+elements.onboardingCloudLogoutButton?.addEventListener("click", () => {
   logoutFromCloud();
 });
 
@@ -2872,6 +2927,10 @@ elements.cloudUploadButton.addEventListener("click", () => {
 });
 
 elements.cloudDownloadButton.addEventListener("click", () => {
+  downloadTripStoreFromCloud();
+});
+
+elements.onboardingCloudDownloadButton?.addEventListener("click", () => {
   downloadTripStoreFromCloud();
 });
 
