@@ -1159,6 +1159,17 @@ select:focus {
   gap: 8px;
 }
 
+.cloud-action-group {
+  display: grid;
+  gap: 6px;
+  max-width: 320px;
+}
+
+.cloud-action-note {
+  margin: 0;
+  line-height: 1.35;
+}
+
 @media (max-width: 860px) {
   .app-shell {
     display: flex;

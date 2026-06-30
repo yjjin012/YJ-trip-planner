@@ -369,7 +369,7 @@ function saveState() {
   entry.state = normalizeState(state);
   entry.updatedAt = new Date().toISOString();
   persistTripStore();
-  elements.saveStatus.textContent = "자동 저장됨";
+  elements.saveStatus.textContent = "현재 브라우저에 저장됨";
 }
 
 function setBackupStatus(message) {
@@ -452,7 +452,7 @@ function renderCloudControls() {
   }
 
   if (loggedIn) {
-    setCloudStatus(`${cloudUser.email} 계정으로 연결됨. 필요할 때 직접 저장하거나 불러오세요.`);
+    setCloudStatus(`${cloudUser.email} 계정으로 연결됨. 클라우드 저장/불러오기는 버튼을 눌러 직접 실행합니다.`);
   } else {
     setCloudStatus("로그인하면 클라우드 저장/불러오기를 사용할 수 있습니다.");
     setCloudLastSaved("");
@@ -542,7 +542,11 @@ async function downloadTripStoreFromCloud() {
     return;
   }
 
-  if (!confirm("현재 브라우저의 데이터가 클라우드 데이터로 교체됩니다. 계속할까요?")) {
+  if (
+    !confirm(
+      "현재 브라우저의 데이터가 클라우드 데이터로 교체됩니다.\n\n지금 이 기기에 보이는 여행 목록과 내용이 같은 계정의 클라우드 데이터로 바뀝니다. 계속할까요?",
+    )
+  ) {
     return;
   }
 
@@ -2249,7 +2253,7 @@ function buildTripViewHtml(tripState, exportedWeather = { status: "idle", data: 
         <h2>참여자</h2>
         <p>${escapeHtml(tripState.participants.join(", "))}</p>
       </section>
-      <footer>보기 전용 여행 관리 파일입니다. 수정이나 자동 동기화는 원래 앱에서 진행해 주세요.</footer>
+      <footer>보기 전용 여행 관리 파일입니다. 수정이나 클라우드 저장/불러오기는 원래 앱에서 직접 진행해 주세요.</footer>
     </main>
     <script>
       document.querySelectorAll(".day-button").forEach((button) => {
