@@ -2839,8 +2839,15 @@ select,
 
 @media (max-width: 760px) {
   .tabs {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, 39px) !important;
+    flex-wrap: nowrap !important;
     gap: 0 !important;
-    border: 1px solid var(--line) !important;
+    height: 80px !important;
+    min-height: 80px !important;
+    max-height: 80px !important;
+    border: 1px solid var(--ink) !important;
     border-radius: 6px !important;
     background: #fff !important;
     box-shadow: 0 10px 24px rgba(7, 17, 31, 0.08) !important;
@@ -2848,9 +2855,17 @@ select,
   }
 
   .tab-button {
+    display: grid !important;
+    place-items: center !important;
+    flex: none !important;
+    width: auto !important;
+    height: 39px !important;
+    min-height: 39px !important;
+    max-height: 39px !important;
     border: 0 !important;
-    border-right: 1px solid var(--line) !important;
-    border-bottom: 1px solid var(--line) !important;
+    border-right: 1px solid var(--ink) !important;
+    border-bottom: 1px solid var(--ink) !important;
+    border-radius: 0 !important;
     background: #fff !important;
   }
 
@@ -2863,7 +2878,7 @@ select,
   }
 
   .tab-button.active {
-    border-color: var(--line) !important;
+    border-color: var(--ink) !important;
     background: var(--ink) !important;
     color: #fff !important;
   }
