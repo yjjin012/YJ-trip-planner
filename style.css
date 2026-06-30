@@ -2774,3 +2774,54 @@ select,
     white-space: normal;
   }
 }
+
+@media (max-width: 760px) {
+  .onboarding-panel {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  .onboarding-copy,
+  .onboarding-cloud-panel,
+  .onboarding-steps {
+    grid-column: 1 !important;
+  }
+
+  .onboarding-copy {
+    grid-row: 1 !important;
+  }
+
+  .onboarding-cloud-panel {
+    grid-row: 2 !important;
+    margin-top: 0 !important;
+  }
+
+  .onboarding-steps {
+    grid-row: 3 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .onboarding-steps > * {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 10px !important;
+    row-gap: 2px !important;
+    min-height: 0 !important;
+    padding: 10px 12px !important;
+  }
+
+  .onboarding-steps p {
+    grid-column: 2;
+  }
+
+  .onboarding-cloud-panel .cloud-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  .onboarding-cloud-panel .cloud-form .cloud-actions,
+  .onboarding-cloud-panel > .cloud-actions {
+    justify-content: flex-start !important;
+  }
+}
